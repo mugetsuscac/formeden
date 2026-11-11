@@ -1,0 +1,9 @@
+{
+  "name": "zilli-eden",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page do Éden, Zilli Construtora",
+  "scripts": {
+    "test": "node verify.cjs"
+  }
+}
