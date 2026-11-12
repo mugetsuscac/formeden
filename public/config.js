@@ -1,7 +1,6 @@
-// Revisão: sem disparos ao Pixel e sem envio a um número não confirmado.
-// Para ativar após confirmar o destino comercial: mode: 'live' e whatsappNumber.
+// Atendimento do Éden: número comercial confirmado por Marlon.
 window.EDEN_CONFIG = Object.freeze({
-  mode: 'review',
-  whatsappNumber: '',
+  mode: 'live',
+  whatsappNumber: '5548999012743',
   pixelId: '973592522081687'
 });
