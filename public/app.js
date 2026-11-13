@@ -48,7 +48,7 @@ function render(focus=false){
 function advance(name,value){if(forwardingToTeam||step>=questions.length||questions[step][0]!==name||!questions[step][2].includes(value))return;answers.set(name,value);step++;render(true)}
 back.addEventListener('click',()=>{if(step>0&&!forwardingToTeam){step--;render(true)}});
 
-// Mesma conta de Pixel encontrada no código atual do Solo. Desativada na revisão.
+// Pixel do Éden confirmado pelo responsável. Desativado na revisão.
 function initializePixel(){
   if(config.mode!=='live'||!/^55\d{10,11}$/.test(config.whatsappNumber||'')||!/^\d+$/.test(config.pixelId||''))return;
   if(!window.fbq){
@@ -70,7 +70,7 @@ form.addEventListener('submit',event=>{
   forwardingToTeam=true;document.getElementById('submit').disabled=true;
   const whatsappUrl='https://wa.me/'+config.whatsappNumber+'?text='+encodeURIComponent(message);
   let pixelEventQueued=false;
-  try{if(typeof window.fbq==='function'){window.fbq('trackCustom','Form Response',{empreendimento:'Eden'});pixelEventQueued=true}}catch(error){/* O contato funciona com o Pixel bloqueado, como no Solo. */}
+  try{if(typeof window.fbq==='function'){window.fbq('track','Lead',{empreendimento:'Eden'});pixelEventQueued=true}}catch(error){/* O contato funciona com o Pixel bloqueado, como no Solo. */}
   const openWhatsApp=()=>window.location.assign(whatsappUrl);
   if(pixelEventQueued)window.setTimeout(openWhatsApp,250);else openWhatsApp();
 });

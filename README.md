@@ -17,15 +17,13 @@ Não selecione a pasta `public` como Root Directory; a configuração já aponta
 
 Documentação oficial: https://vercel.com/docs/project-configuration/vercel-json
 
-## Atendimento: configuração ainda pendente
+## Atendimento e Meta Pixel
 
-O site pode ser publicado para revisão. O formulário está em modo `review`, sem envio ao WhatsApp e sem carregar ou disparar o Pixel.
+O formulário está em modo `live`, com o WhatsApp comercial do Éden configurado em `public/config.js`.
 
-Em `public/config.js`, o telefone do Éden está vazio. Depois de confirmar o destino comercial, informe o número com país e DDD, apenas dígitos, e altere `mode` para `live`. O número do Solo não foi reaproveitado.
+O Meta Pixel do Éden é `985054417533046`, confirmado pelo responsável. Em modo `live`, o script registra `PageView` na abertura da página. O HTML inclui o fallback `noscript` do mesmo Pixel.
 
-A conta de Pixel `973592522081687` é a encontrada no código atual do Solo. Confirmar sua utilização no Éden antes de ativar.
-
-O fluxo preservado do Solo valida as respostas, dispara `Form Response` na confirmação e abre o WhatsApp com o resumo. A equipe só recebe a mensagem quando o visitante envia no WhatsApp; não há envio para servidor nem CRM. O evento não comprova recebimento da mensagem. Não mudar a conversão para PageView ou clique em um botão direto de WhatsApp.
+O formulário valida as respostas, dispara o evento padrão `Lead` uma única vez na confirmação e abre o WhatsApp com o resumo. Cliques anteriores e respostas incompletas não disparam conversões. A equipe só recebe a mensagem quando o visitante envia no WhatsApp; não há envio para servidor nem CRM. O evento não comprova recebimento da mensagem.
 
 ## Estrutura
 
@@ -41,6 +39,6 @@ O fluxo preservado do Solo valida as respostas, dispara `Form Response` na confi
 
 Com Node instalado, execute `npm test` ou `node verify.cjs`. Não é necessário instalar dependências. Os testes cobrem 180 combinações de respostas, validação, revisão, prevenção de duplicidade e ordem do evento/redirecionamento.
 
-A conferência visual desktop/mobile no endereço final e o teste real no Gerenciador de Eventos continuam pendentes. O ambiente de preparação bloqueou conexões de prévia local.
+O fluxo do Pixel e do formulário também foi validado em Chromium nos tamanhos desktop e mobile, com interceptação das requisições para não enviar eventos de teste ao Meta. A confirmação de recebimento no Gerenciador de Eventos deve ser feita na conta do Meta.
 
 A página mantém `noindex,nofollow` e `robots.txt` bloqueando indexação durante a revisão. Após definir o domínio final, configure a imagem de compartilhamento com uma URL HTTPS absoluta. Não foram incluídos o book completo, plantas públicas, preços, vagas, estoque ou prazo de entrega não confirmados.

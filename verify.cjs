@@ -10,8 +10,8 @@ function setup(config,pixel='ok'){
  const c=vm.createContext({window,document}),read=s=>vm.runInContext(s,c);vm.runInContext(source,c);
  return {get,events,navigations,timers,windows,read,submit:()=>get('qualification').events.submit({preventDefault(){}})};
 }
-const live={mode:'live',whatsappNumber:'5548999999999',pixelId:'973592522081687'};
-const a=setup(live);const qs=a.read('questions');let count=0;
+const live={mode:'live',whatsappNumber:'5548999999999',pixelId:'985054417533046'};
+const a=setup(live);assert.deepEqual(Array.from(a.events[0]),['init',live.pixelId]);assert.deepEqual(Array.from(a.events[1]),['track','PageView']);assert.equal(a.events.length,2);const qs=a.read('questions');let count=0;
 for(const p of qs[0][2])for(const c of qs[1][2])for(const t of qs[2][2])for(const h of qs[3][2]){
  const x=setup(live);x.events.length=0;
  for(const [i,answer]of [p,c,t,h].entries()){
@@ -19,7 +19,7 @@ for(const p of qs[0][2])for(const c of qs[1][2])for(const t of qs[2][2])for(cons
   x.read(`advance(questions[${i}][0],${JSON.stringify(answer)})`);
  }
  assert.equal(x.get('summary').children.length,4);assert.equal(x.get('review').hidden,false);
- x.submit();x.submit();assert.equal(x.timers.length,1);assert.equal(x.events.length,1);assert.deepEqual(Array.from(x.events[0]).slice(0,2),['trackCustom','Form Response']);
+ x.submit();x.submit();assert.equal(x.timers.length,1);assert.equal(x.events.length,1);assert.deepEqual(Array.from(x.events[0]).slice(0,2),['track','Lead']);
  x.timers.shift()();assert.equal(x.navigations.length,1);const url=new URL(x.navigations[0]);assert.equal(url.hostname,'wa.me');assert.equal(url.pathname,'/5548999999999');
  const m=url.searchParams.get('text');for(const val of [p,c,t,h])assert(m.includes(val));assert(!m.includes('undefined'));count++;
 }

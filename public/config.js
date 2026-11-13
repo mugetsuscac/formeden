@@ -2,5 +2,5 @@
 window.EDEN_CONFIG = Object.freeze({
   mode: 'live',
   whatsappNumber: '5548999012743',
-  pixelId: '973592522081687'
+  pixelId: '985054417533046'
 });
