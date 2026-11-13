@@ -1,52 +1,38 @@
 'use strict';
-// Interação adaptada do Solo: etapas, revisão, confirmação e WhatsApp.
+// Quatro perguntas visíveis, com uma escolha por pergunta.
 const questions = [
   ['purpose','Você procura um apartamento para…',['Morar','Investir','Ainda estou avaliando']],
-  ['configuration','Qual espaço combina com o seu momento?',['1 suíte · 68 m²','2 dormitórios, sendo 1 suíte · 80 m²','2 suítes · 90 ou 94 m²','3 suítes · 117 m²','Ainda não decidi']],
-  ['timing','Quando você pensa em comprar?',['Até 3 meses','De 3 a 6 meses','De 6 a 12 meses','Ainda estou pesquisando']],
-  ['help','Como a equipe pode ajudar você?',['Quero consultar valores e unidades','Quero conhecer as configurações e os diferenciais','Quero entender as possibilidades de compra']]
+  ['configuration','Qual tamanho combina com você?',['68 ou 80 m²','90 a 117 m²','Ainda não decidi']],
+  ['timing','Quando você pensa em comprar?',['Até 6 meses','De 6 a 12 meses','Ainda estou pesquisando']],
+  ['help','Como podemos ajudar você?',['Consultar valores e unidades','Conhecer os apartamentos','Entender as condições de compra']]
 ];
-const titles = ['Seu objetivo','Configuração desejada','Prazo de compra','Seu atendimento'];
-const answers = new Map();
-let step=0, forwardingToTeam=false;
+const titles = ['Seu objetivo','Tamanho desejado','Prazo de compra','Seu atendimento'];
+let forwardingToTeam=false;
 const config=window.EDEN_CONFIG || {};
 const form=document.getElementById('qualification');
 const container=document.getElementById('questions');
-const review=document.getElementById('review');
-const back=document.getElementById('back');
 const status=document.getElementById('form-status');
 const preview=document.getElementById('message-preview');
 
 function buildMessage(data){
   return 'Olá! Conheci o Éden e gostaria de receber atendimento personalizado da equipe da Zilli.\n\n'+questions.map(([name],i)=>titles[i]+': '+data.get(name)).join('\n');
 }
-function isComplete(){return questions.every(([name,,options])=>options.includes(answers.get(name)))}
-function render(focus=false){
-  container.replaceChildren();status.hidden=true;preview.hidden=true;
-  const complete=step===questions.length;
-  container.hidden=complete;review.hidden=!complete;back.hidden=step===0;
-  document.getElementById('step-label').textContent=complete?'04 / 04 · Suas escolhas':String(step+1).padStart(2,'0')+' / 04';
-  document.querySelectorAll('.progress span').forEach((segment,index)=>segment.classList.toggle('done',complete||index<=step));
-  document.getElementById('nav-hint').textContent=complete?'Você pode voltar e rever suas respostas.':'Selecione uma opção para continuar.';
-  if(complete){
-    const summary=document.getElementById('summary');summary.replaceChildren();
-    questions.forEach(([name],index)=>{const item=document.createElement('div');const title=document.createElement('dt');const value=document.createElement('dd');title.textContent=titles[index];value.textContent=answers.get(name);item.append(title,value);summary.append(item)});
-    if(focus)document.getElementById('review-title').focus({preventScroll:true});return;
-  }
-  const [name,title,options]=questions[step];
-  const field=document.createElement('fieldset');const legend=document.createElement('legend');legend.textContent=title;legend.tabIndex=-1;field.append(legend);
-  const choices=document.createElement('div');choices.className='options';
-  options.forEach((value,index)=>{
-    const label=document.createElement('label');label.className='option';
-    const input=document.createElement('input');input.type='radio';input.name=name;input.value=value;input.checked=answers.get(name)===value;input.required=true;input.id=name+'-'+index;
-    // Como no Solo, a seleção avança. A guarda de etapa evita avanço duplo.
-    input.addEventListener('change',()=>advance(name,value));
-    input.addEventListener('click',()=>{if(answers.get(name)===value)advance(name,value)});
-    const text=document.createElement('span');text.textContent=value;label.append(input,text);choices.append(label);
-  });field.append(choices);container.append(field);if(focus)legend.focus({preventScroll:true});
+function render(){
+  container.replaceChildren();
+  questions.forEach(([name,title,options],questionIndex)=>{
+    const field=document.createElement('fieldset');field.className='form-question';
+    const legend=document.createElement('legend');
+    const number=document.createElement('span');number.className='question-number';number.textContent=String(questionIndex+1).padStart(2,'0');number.setAttribute('aria-hidden','true');
+    const heading=document.createElement('span');heading.textContent=title;legend.append(number,heading);field.append(legend);
+    const choices=document.createElement('div');choices.className='options';
+    options.forEach((value,index)=>{
+      const label=document.createElement('label');label.className='option';
+      const input=document.createElement('input');input.type='radio';input.name=name;input.value=value;input.required=true;input.id=name+'-'+index;
+      const text=document.createElement('span');text.textContent=value;label.append(input,text);choices.append(label);
+    });
+    field.append(choices);container.append(field);
+  });
 }
-function advance(name,value){if(forwardingToTeam||step>=questions.length||questions[step][0]!==name||!questions[step][2].includes(value))return;answers.set(name,value);step++;render(true)}
-back.addEventListener('click',()=>{if(step>0&&!forwardingToTeam){step--;render(true)}});
 
 // Pixel do Éden confirmado pelo responsável. Desativado na revisão.
 function initializePixel(){
@@ -59,10 +45,17 @@ function initializePixel(){
   window.fbq('init',config.pixelId);window.fbq('track','PageView');
 }
 window.addEventListener('pageshow',()=>{forwardingToTeam=false;document.getElementById('submit').disabled=false});
+form.addEventListener('change',()=>{status.hidden=true;preview.hidden=true});
 form.addEventListener('submit',event=>{
   event.preventDefault();
-  if(forwardingToTeam||step!==questions.length||!isComplete())return;
-  const message=buildMessage(answers);
+  if(forwardingToTeam)return;
+  const data=new FormData(form);
+  const missing=questions.find(([name,,options])=>!options.includes(data.get(name)));
+  if(missing){
+    status.textContent='Selecione uma opção em cada uma das quatro perguntas para continuar.';status.hidden=false;
+    document.getElementById(missing[0]+'-0').focus();return;
+  }
+  const message=buildMessage(data);
   if(config.mode!=='live'||!/^55\d{10,11}$/.test(config.whatsappNumber||'')){
     status.textContent='Esta é uma página em revisão. O atendimento será habilitado após a confirmação do WhatsApp comercial do Éden. Nenhuma mensagem foi enviada.';status.hidden=false;
     document.getElementById('message-text').textContent=message;preview.hidden=false;return;
@@ -70,8 +63,17 @@ form.addEventListener('submit',event=>{
   forwardingToTeam=true;document.getElementById('submit').disabled=true;
   const whatsappUrl='https://wa.me/'+config.whatsappNumber+'?text='+encodeURIComponent(message);
   let pixelEventQueued=false;
-  try{if(typeof window.fbq==='function'){window.fbq('track','Lead',{empreendimento:'Eden'});pixelEventQueued=true}}catch(error){/* O contato funciona com o Pixel bloqueado, como no Solo. */}
+  try{if(typeof window.fbq==='function'){window.fbq('track','Lead',{empreendimento:'Eden'});pixelEventQueued=true}}catch(error){/* O contato continua funcionando se o Pixel estiver bloqueado. */}
   const openWhatsApp=()=>window.location.assign(whatsappUrl);
   if(pixelEventQueued)window.setTimeout(openWhatsApp,250);else openWhatsApp();
 });
+
+// A chamada fixa libera a tela assim que o formulário fica visível.
+const mobileCta=document.getElementById('mobile-cta');
+if(mobileCta&&'IntersectionObserver' in window){
+  const observer=new window.IntersectionObserver(entries=>{
+    mobileCta.hidden=entries.some(entry=>entry.isIntersecting);
+  });
+  observer.observe(document.querySelector('.form-panel'));
+}
 initializePixel();render();

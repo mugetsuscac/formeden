@@ -25,16 +25,16 @@
 <header class="header wrap">
   <a href="#inicio" aria-label="Éden, início"><img class="eden-brand" src="assets/eden-logo-branco.png" width="186" height="60" alt="Éden"></a>
   <span class="header-location">Campinas · São José, SC</span>
-  <a class="header-cta" href="#atendimento">Fale com a Zilli <span aria-hidden="true">↗</span></a>
+  <a class="header-cta" href="#qualification">Consultar valores e unidades <span aria-hidden="true">↗</span></a>
 </header>
 <main>
   <section class="hero" id="inicio" aria-labelledby="headline">
     <div class="hero-copy">
       <p class="eyebrow">Éden, por Zilli Construtora</p>
-      <h1 id="headline">Morar em Campinas<br>com o conforto do Éden.</h1>
+      <h1 id="headline">Morar em Campinas<br> com o conforto do Éden.</h1>
       <p class="intro">Apartamentos de 68 a 117 m², com piscinas aquecidas, academia e spa. Na Rua Cruz e Souza, perto dos serviços que fazem parte do seu dia.</p>
       <div class="hero-facts"><div><strong>68 a 117 <span>m²</span></strong><small>Apartamentos</small></div><div><strong>1 a 3 <span>suítes*</span></strong><small>Conforme a configuração</small></div></div>
-      <a class="button light" href="#atendimento">Quero conhecer o Éden <span aria-hidden="true">↗</span></a>
+      <a class="button light" href="#qualification">Consultar valores e unidades <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
       <p class="hero-address">Rua Cruz e Souza · Campinas · São José</p>
     </div>
     <figure class="hero-visual"><img src="assets/eden-fachada.webp" width="1200" height="1600" fetchpriority="high" alt="Perspectiva oficial da fachada do Éden, com varandas e vegetação"><figcaption>Fachada do Éden · Perspectiva artística</figcaption></figure>
@@ -57,22 +57,26 @@
 
   <section class="contact" id="atendimento" aria-labelledby="form-title">
     <div class="wrap contact-grid">
-      <div class="contact-copy"><p class="eyebrow">Atendimento personalizado</p><h2 id="form-title">Vamos conhecer<br>o seu próximo apartamento?</h2><p>Responda a quatro perguntas rápidas. A equipe da Zilli ajuda você a conhecer as configurações e consultar valores e disponibilidade.</p><p class="contact-direct">Você conversa diretamente com a equipe da construtora.</p><img class="zilli" src="assets/zilli-logo.png" width="130" height="64" loading="lazy" alt="Zilli Construtora"></div>
+      <div class="contact-copy"><p class="eyebrow">Atendimento personalizado</p><h2 id="form-title">Encontre a opção de<br> apartamento para você.</h2><p>São apenas 4 perguntas. Ao final, você segue para o WhatsApp da Zilli para consultar valores, unidades e condições de compra.</p><p class="contact-direct">Você conversa diretamente com a equipe da construtora.</p><img class="zilli" src="assets/zilli-logo.png" width="130" height="64" loading="lazy" alt="Zilli Construtora"></div>
       <div class="form-panel">
-        <form id="qualification" novalidate>
-          <div class="progress-row"><span id="step-label" aria-live="polite"></span><span class="form-kicker">Sobre o que você procura</span></div>
-          <div class="progress" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-          <div id="questions" class="stage"></div>
-          <div id="review" hidden><h3 id="review-title" tabindex="-1">Confira suas respostas</h3><dl id="summary"></dl><button class="button dark" type="submit" id="submit"><span>Solicitar atendimento personalizado</span><span aria-hidden="true">↗</span></button><p class="review-note">Você seguirá para o WhatsApp com suas respostas. Confira a mensagem e toque em enviar para falar com a equipe.</p></div>
-          <div class="nav-row"><button id="back" type="button" hidden>← Voltar</button><span id="nav-hint">Selecione uma opção para continuar.</span></div>
+        <form id="qualification" aria-labelledby="form-title" aria-describedby="form-instructions">
+          <div class="form-intro"><p class="form-kicker">Seu atendimento começa aqui</p><p id="form-instructions">4 perguntas rápidas. Selecione uma opção em cada uma.</p></div>
+          <div id="questions" class="form-questions"></div>
+          <button class="button dark" type="submit" id="submit"><span>Consultar valores no WhatsApp</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></button>
+          <p class="review-note">Ao continuar, o WhatsApp abrirá com suas respostas. Toque em enviar para falar com a equipe.</p>
           <p id="form-status" role="status" hidden></p>
           <div id="message-preview" hidden><h4>Prévia da sua mensagem</h4><p id="message-text"></p></div>
         </form>
-        <p class="form-footnote">Quatro perguntas rápidas. Suas respostas serão compartilhadas com a equipe quando você enviar a mensagem no WhatsApp.</p>
+        <p class="form-footnote">Suas respostas serão compartilhadas com a Zilli quando você enviar a mensagem no WhatsApp.</p>
         <noscript><p>Ative o JavaScript para responder ao formulário de atendimento.</p></noscript>
       </div>
     </div>
   </section>
 </main>
 <footer class="wrap footer"><span>Éden · Zilli Construtora</span><p>Campinas, São José / SC</p><a href="#inicio">Voltar ao início ↑</a></footer>
+<aside class="mobile-cta" id="mobile-cta" aria-label="Consultar valores do Éden">
+  <p class="mobile-cta-title">Quer consultar valores e unidades do Éden?</p>
+  <p class="mobile-cta-note">Responda 4 perguntas e fale com a Zilli.</p>
+  <a class="button dark" href="#qualification"><span>Consultar valores e unidades</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+</aside>
 </body></html>

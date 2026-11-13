@@ -23,13 +23,17 @@ O formulário está em modo `live`, com o WhatsApp comercial do Éden configurad
 
 O Meta Pixel do Éden é `985054417533046`, confirmado pelo responsável. Em modo `live`, o script registra `PageView` na abertura da página. O HTML inclui o fallback `noscript` do mesmo Pixel.
 
-O formulário valida as respostas, dispara o evento padrão `Lead` uma única vez na confirmação e abre o WhatsApp com o resumo. Cliques anteriores e respostas incompletas não disparam conversões. A equipe só recebe a mensagem quando o visitante envia no WhatsApp; não há envio para servidor nem CRM. O evento não comprova recebimento da mensagem.
+O formulário mostra as quatro perguntas juntas, com três alternativas e uma única escolha em cada pergunta. Os tamanhos foram agrupados em 68 ou 80 m², 90 a 117 m² e uma opção para quem ainda não decidiu. As respostas podem ser alteradas antes do envio.
+
+O botão final valida as respostas, dispara o evento padrão `Lead` uma única vez e abre o WhatsApp com o resumo. Cliques nas chamadas e respostas incompletas não disparam conversões. A equipe só recebe a mensagem quando o visitante envia no WhatsApp; não há envio para servidor nem CRM. O evento não comprova recebimento da mensagem.
+
+No celular, uma faixa fixa convida o visitante a consultar valores e unidades. Ela leva diretamente ao formulário e desaparece enquanto ele estiver visível. A faixa segue as cores e a tipografia existentes.
 
 ## Estrutura
 
 - `public/index.html`: as três seções da página.
 - `public/style.css`: identidade e responsividade.
-- `public/app.js`: perguntas em etapas, revisão, Pixel e encaminhamento.
+- `public/app.js`: formulário completo, validação, chamada fixa, Pixel e encaminhamento.
 - `public/config.js`: modo de revisão, telefone e Pixel.
 - `public/assets/`: imagens locais usadas pela página.
 - `vercel.json`: configuração do deploy estático.
@@ -37,7 +41,7 @@ O formulário valida as respostas, dispara o evento padrão `Lead` uma única ve
 
 ## Verificação
 
-Com Node instalado, execute `npm test` ou `node verify.cjs`. Não é necessário instalar dependências. Os testes cobrem 180 combinações de respostas, validação, revisão, prevenção de duplicidade e ordem do evento/redirecionamento.
+Com Node instalado, execute `npm test` ou `node verify.cjs`. Não é necessário instalar dependências. Os testes cobrem 81 combinações de respostas, validação, revisão, edição das escolhas, prevenção de duplicidade, visibilidade da chamada fixa e ordem do evento/redirecionamento.
 
 O fluxo do Pixel e do formulário também foi validado em Chromium nos tamanhos desktop e mobile, com interceptação das requisições para não enviar eventos de teste ao Meta. A confirmação de recebimento no Gerenciador de Eventos deve ser feita na conta do Meta.
 
